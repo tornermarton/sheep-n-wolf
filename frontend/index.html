@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<canvas id="scene" width="500" height="500" style="border:1px solid #000000;"></canvas>
+
+<script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+<script type="application/javascript">
+  const canvas = document.getElementById("scene");
+  const socket = io("http://localhost:3000");
+
+  socket.emit('message', { width: canvas.width, height: canvas.height });
+
+  socket.on('message', ({ data }) => {
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+
+    data.herd.forEach(e => {
+      draw(e, "blue");
+    });
+
+    draw(data.wolf, "red");
+  });
+
+  function draw(e, color) {
+    const context = canvas.getContext("2d");
+
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(
+      e.x,
+      e.y,
+      e.size,
+      0,
+      2 * Math.PI
+    );
+    context.fill();
+  }
+</script>
+</body>
+
+</html>
