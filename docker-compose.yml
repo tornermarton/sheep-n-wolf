@@ -3,12 +3,13 @@ version: '3.5'
 services:
   backend:
     build: ./backend
-    image: tornermarton/sheep-n-wolf
+    image: tornermarton/sheep-n-wolf-be
     container_name: sheep-n-wolf-be
     ports:
       - "3000:3000"
   frontend:
-    image: nginx
+    build: ./frontend
+    image: tornermarton/sheep-n-wolf-fe
     container_name: sheep-n-wolf-fe
     depends_on:
       - backend
